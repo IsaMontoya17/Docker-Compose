@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mysql:5.7
+    container_name: db2
+    networks:
+      - internal
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: wordpressdb
+
+  web:
+    image: wordpress:latest
+    container_name: web2
+    ports:
+      - "8081:80"
+    networks:
+      - internal
+      - public
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: my-secret-pw
+      WORDPRESS_DB_NAME: wordpressdb
+      WORDPRESS_TABLE_PREFIX: hj
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  public:
+    driver: bridge
